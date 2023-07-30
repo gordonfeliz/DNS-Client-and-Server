@@ -7,7 +7,6 @@ USA_DNS = ["169.237.229.88", "168.62.214.68", "104.42.159.98"]
 Canada_DNS = ["136.159.85.15", "184.94.80.170", "142.103.1.1"]
 
 def createQuery(domain):
-    # Identification: didnt matter, but we wanted it to be 46290
     query = "b4d2"
     # The only bit we want to set is the RD flag, so binary: 0000000100000000 Hex: 0100
     query += "0100"
@@ -36,9 +35,6 @@ def createQuery(domain):
     # We want internet for QCLASS, so it is 0x0001
     query += "0001"
 
-    # Note: Besides the domain section, most of the query could have been combined
-    # and completely avoided using the += operation, but it was done this way
-    # to better understand how each section of the query worked
     return query
 
 def DNSRequest(query):
@@ -94,9 +90,6 @@ def readResponse(response, query):
     # Everything after related to the query we made is also unnecessary
     response = response[len(query):]
 
-    # It is expected that there will only be one answer, the host name, but we left this for loop intact
-    # to show what it would have looked like (although it doesnt include the other COUNT types)
-    # for PartB if it wasnt buggy
     for answers in range(0, ANCOUNT):
         Type_Check = response[4:8]
         IPLen = int(response[20:24], 16)
