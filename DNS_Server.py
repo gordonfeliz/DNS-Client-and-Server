@@ -9,7 +9,6 @@ Root_Servers = ["198.41.0.4", "199.9.14.201", "192.33.4.12", "199.7.91.13", "192
 cache = []
 
 def createQuery(domain):
-    # Identification didnt matter, but we wanted it to be 46290
     query = "b4d2"
     # The only bit we want to set is the RD flag, so binary: 0000000100000000 Hex: 0100
     query += "0100"
@@ -38,9 +37,6 @@ def createQuery(domain):
     # We want internet for QCLASS, so it is 0x0001
     query += "0001"
 
-    # Note: Besides the domain section, most of the query could have been combined
-    # and completely avoided using the += operation, but it was done this way
-    # to better understand how each section of the query worked
     return query
 
 def DNSRequest_Root(query):
@@ -78,11 +74,6 @@ def DNSRequest(query, IP):
         return binascii.hexlify(response[0]).decode("utf-8")
 
 def readResponse(response, query):
-    # Initially had a for loop that went for as many answers as there were, however
-    # this was shown to be buggy as sometimes one of the answer counts would bug and
-    # claim to have less answers then there were, resulting in no IP Address given. To
-    # fix this, we replaced the for loop with a while loop and disregarded ANCOUNT, NSCOUNT,
-    # and ARCOUNT altogether
     response = response[len(query):]
 
     while(1):
